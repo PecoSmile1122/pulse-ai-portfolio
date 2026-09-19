@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PulseAI (墨诊) · 跨文化 AI 中医导诊工作台 - AI PM 作品集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: { 400: '#34d399', 500: '#10b981', 950: '#022c22' },
+                        slate: { 850: '#111827', 900: '#0f172a', 950: '#020617' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel { background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(51, 65, 85, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-slate-950 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="border-b border-slate-800 bg-slate-950/80 sticky top-0 backdrop-blur z-40">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs px-2.5 py-1 rounded-full font-mono font-semibold">AI Agent Showcase</span>
+                <h1 class="text-xl font-bold tracking-tight">PulseAI <span class="text-emerald-400 font-normal">| 墨诊</span></h1>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm text-slate-400">
+                <a href="#overview" class="hover:text-emerald-400 transition">项目背景</a>
+                <a href="#journey" class="hover:text-emerald-400 transition">就医旅程</a>
+                <a href="#demo" class="hover:text-emerald-400 transition">Agent 演示</a>
+                <a href="#rag" class="hover:text-emerald-400 transition">机构 RAG</a>
+                <button onclick="toggleModal('arch-modal')" class="text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-lg hover:bg-emerald-500/10 transition">查看 Agent 架构设计</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section id="overview" class="max-w-7xl mx-auto px-6 pt-16 pb-12">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-xs text-slate-400 font-mono">
+                        <span>Multi-Agent System</span> • <span>RAG Reranking</span> • <span>Cross-Cultural Health</span>
+                    </div>
+                    <h2 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                        打破跨文化就医鸿沟<br/>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200">AI 驱动的东方医疗导诊工作台</span>
+                    </h2>
+                    <p class="text-slate-400 text-base sm:text-lg leading-relaxed">
+                        随着入境游复苏与“中医出海”热潮，越来越多外国友人尝试体验针灸、推拿与中医药。PulseAI 旨在通过 LLM 意图识别与中医病机映射，解决外籍人士**“病症表达难、科室对不准、现场沟通瘫痪”**的核心痛点。
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-4">
+                        <a href="#demo" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 text-sm flex items-center gap-2">
+                            🚀 体验 Agent 智能问诊
+                        </a>
+                        <button onclick="toggleModal('arch-modal')" class="bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-medium px-6 py-3 rounded-xl transition text-sm">
+                            📄 查阅 System Prompt 与架构
+                        </button>
+                    </div>
+                </div>
+                <!-- Core Metrics / Pitch Card -->
+                <div class="lg:col-span-5 bg-slate-900/60 border border-slate-800 rounded-2xl p-6 space-y-4">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider font-mono">Core Value Delivered</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
+                            <div class="text-2xl font-bold text-emerald-400 font-mono">01/ Sec</div>
+                            <div class="text-xs text-slate-400 mt-1">主诉卡生成速度</div>
+                        </div>
+                        <div class="bg-slate-950/80 p-4 rounded-xl border border-slate-800/80">
+                            <div class="text-2xl font-bold text-emerald-400 font-mono">100%</div>
+                            <div class="text-xs text-slate-400 mt-1">三甲国际部挂号指引</div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-emerald-950/30 border border-emerald-500/20 rounded-xl">
+                        <p class="text-xs text-emerald-300 leading-relaxed">
+                            💡 <b>PM 设计思考：</b> 不强行接入高风险挂号 API，而专注打造“跨文化诊断映射”与“就诊沟通卡”，用极轻的工具切入高价值跨文化医疗场景。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Journey Section -->
+        <section id="journey" class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-900">
+            <div class="mb-8">
+                <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest">End-to-End Journey</span>
+                <h3 class="text-2xl font-bold text-white mt-1">五步闭环，全流程协助外籍患者看中医</h3>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-800 relative group hover:border-emerald-500/40 transition">
+                    <span class="text-emerald-400 font-mono text-xs font-bold block mb-2">STEP 01</span>
+                    <h4 class="font-bold text-slate-200 text-sm mb-1">自然语言问诊</h4>
+                    <p class="text-xs text-slate-400">支持口语化英文主诉描述（如 "Brain fog & bloated"），AI 追问补充细节。</p>
+                </div>
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-800 relative group hover:border-emerald-500/40 transition">
+                    <span class="text-emerald-400 font-mono text-xs font-bold block mb-2">STEP 02</span>
+                    <h4 class="font-bold text-slate-200 text-sm mb-1">中医概念映射</h4>
+                    <p class="text-xs text-slate-400">映射为中医病机（脾虚湿阻），匹配推荐科室（治未病科、针灸科）。</p>
+                </div>
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-800 relative group hover:border-emerald-500/40 transition">
+                    <span class="text-emerald-400 font-mono text-xs font-bold block mb-2">STEP 03</span>
+                    <h4 class="font-bold text-slate-200 text-sm mb-1">对外友好机构 RAG</h4>
+                    <p class="text-xs text-slate-400">精准匹配有英文服务或三甲特需国际部的就医机构与挂号攻略。</p>
+                </div>
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-800 relative group hover:border-emerald-500/40 transition">
+                    <span class="text-emerald-400 font-mono text-xs font-bold block mb-2">STEP 04</span>
+                    <h4 class="font-bold text-slate-200 text-sm mb-1">生成医患沟通卡</h4>
+                    <p class="text-xs text-slate-400">自动导出中英对照主诉卡，患者在诊室内直接展示给老中医看。</p>
+                </div>
+                <div class="bg-slate-900/50 p-5 rounded-xl border border-slate-800 relative group hover:border-emerald-500/40 transition">
+                    <span class="text-emerald-400 font-mono text-xs font-bold block mb-2">STEP 05</span>
+                    <h4 class="font-bold text-slate-200 text-sm mb-1">中医药合规指南</h4>
+                    <p class="text-xs text-slate-400">颗粒剂/中成药服用科普，提示出入境海关违禁成分（如动物药）。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section id="demo" class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-900">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest">Live Interactive Sandbox</span>
+                    <h3 class="text-2xl font-bold text-white mt-1">PulseAI Agent 导诊体验</h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-slate-400">快速试用预设 Preset：</span>
+                    <button onclick="runPreset('shanghai')" class="text-xs bg-slate-800 hover:bg-slate-700 text-emerald-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition">上海：腹胀+脑雾</button>
+                    <button onclick="runPreset('beijing')" class="text-xs bg-slate-800 hover:bg-slate-700 text-emerald-300 px-2.5 py-1.5 rounded-lg border border-slate-700 transition">北京：失眠+偏头痛</button>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-6">
+                <!-- Chat Interface -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl flex flex-col h-[560px] overflow-hidden">
+                    <div class="bg-slate-950/80 px-4 py-3 border-b border-slate-800 flex justify-between items-center text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="font-mono text-slate-300">PulseAI Cross-Cultural Guide Agent</span>
+                        </div>
+                        <span class="text-slate-500 font-mono">Model: Medical-TCM-v2</span>
+                    </div>
+
+                    <div id="chat-box" class="flex-grow p-4 overflow-y-auto space-y-4 custom-scrollbar text-sm">
+                        <div class="bg-slate-800/70 border border-slate-700/50 p-3.5 rounded-xl max-w-md text-slate-200">
+                            Hello! I am your PulseAI medical guide. Tell me your health concern in plain English and your current city in China. I'll help translate it into TCM terms and match the right clinic for you.
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-slate-950 border-t border-slate-800 flex gap-2">
+                        <input id="user-input" type="text" placeholder="e.g. I am in Shanghai. I've had brain fog, bloating after meals, and cold feet for 2 weeks..." 
+                               class="bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-xl px-4 py-2.5 flex-grow focus:outline-none focus:border-emerald-500 transition"
+                               onkeydown="if(event.key==='Enter') sendMessage()">
+                        <button onclick="sendMessage()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-5 py-2.5 rounded-xl text-sm transition">
+                            发送
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Output Panel: Generated Doctor Communication Card -->
+                <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between h-[560px] overflow-y-auto custom-scrollbar">
+                    <div>
+                        <div class="flex justify-between items-center border-b border-slate-800 pb-3 mb-4">
+                            <h4 class="font-bold text-slate-200 text-sm flex items-center gap-2">
+                                🏥 就诊沟通卡 <span class="text-xs text-slate-500 font-normal">(Doctor Card)</span>
+                            </h4>
+                            <span id="card-status" class="text-xs font-mono text-slate-500">等待 Agent 触发生成...</span>
+                        </div>
+                        
+                        <div id="card-placeholder" class="text-center py-20 text-slate-600 text-xs">
+                            在左侧输入症状后，Agent 将自动生成供国内老中医看诊时直接阅读的中英对照《就诊信息摘要卡》。
+                        </div>
+
+                        <div id="doctor-card-content" class="hidden space-y-3 bg-slate-950 border border-emerald-500/30 p-4 rounded-xl text-xs">
+                            <div class="text-center border-b border-slate-800 pb-2 mb-2">
+                                <span class="font-bold text-emerald-400 text-sm">PulseAI 就诊沟通卡</span>
+                                <p class="text-[10px] text-slate-500">Please present this card to your attending physician.</p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-mono">【主诉 Chief Complaint】</span>
+                                <p id="dc-cc" class="text-slate-200 font-medium font-mono mt-0.5"></p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-mono">【发病时长 Duration】</span>
+                                <p id="dc-dur" class="text-slate-200 font-mono mt-0.5"></p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-mono">【中医推断倾向 TCM Indication】</span>
+                                <p id="dc-tcm" class="text-emerald-400 font-bold font-mono mt-0.5"></p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-mono">【建议挂号科室 Recommended Dept】</span>
+                                <p id="dc-dept" class="text-slate-200 font-bold font-mono mt-0.5"></p>
+                            </div>
+                            <div>
+                                <span class="text-slate-400 block font-mono">【推荐就医机构 Matched Clinic】</span>
+                                <p id="dc-clinic" class="text-slate-300 font-mono mt-0.5"></p>
+                            </div>
+                            <div class="pt-2 border-t border-slate-800 text-[10px] text-slate-500 leading-tight">
+                                ⚠️ 本卡片由 AI 辅助翻译与提取，仅用于医患沟通辅助，非最终诊断处方。
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="download-btn" onclick="alert('已模拟导出沟通卡 PDF / 手机截图！')" class="hidden w-full mt-4 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold py-2.5 rounded-xl border border-slate-700 transition">
+                        📱 保存沟通卡至手机相册
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- RAG Knowledge Base Section -->
+        <section id="rag" class="max-w-7xl mx-auto px-6 py-12 border-t border-slate-900">
+            <div class="mb-8">
+                <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest">RAG Data Assets</span>
+                <h3 class="text-2xl font-bold text-white mt-1">对外友好中医医疗机构知识库 (精选)</h3>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="rag-container">
+                <!-- RAG Cards dynamically inserted via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal: Agent Architecture & System Prompt -->
+    <div id="arch-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden shadow-2xl">
+            <div class="px-6 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/50">
+                <h3 class="font-bold text-white text-base flex items-center gap-2">
+                    ⚙️ PulseAI Agent 架构与 System Prompt 详细设计
+                </h3>
+                <button onclick="toggleModal('arch-modal')" class="text-slate-400 hover:text-white font-mono text-lg">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6 text-xs custom-scrollbar">
+                <div>
+                    <h4 class="font-bold text-emerald-400 text-sm mb-2 font-mono">1. Multi-Agent 编排与 Guardrails</h4>
+                    <p class="text-slate-300 leading-relaxed mb-2">
+                        系统采用 3-Agent 架构模式，避免单一 Prompt 造成幻觉或输出格式错乱：
+                    </p>
+                    <ul class="list-disc pl-5 text-slate-400 space-y-1">
+                        <li><b>Intent Intake Agent:</b> 负责解析自然语言口语，判断主诉完整度，缺失关键要素时自动追问。</li>
+                        <li><b>Domain Mapping Agent:</b> 结合中医术语知识库，将西医/口语症状转化为标准中医病机，映射推荐科室。</li>
+                        <li><b>RAG & Card Generator:</b> 检索匹配机构知识库，通过 strict JSON Schema 强制输出《就诊沟通卡》。</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-emerald-400 text-sm mb-2 font-mono">2. Core System Prompt</h4>
+                    <pre class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-slate-300 font-mono overflow-x-auto leading-relaxed">
+# Role: PulseAI - Cross-Cultural TCM Guide Agent
+
+## Directives
+1. Translate natural language user health concerns into accurate TCM pattern concepts.
+2. Output a structured Doctor Communication Card when symptoms are mapped.
+3. NEVER prescribe herbal medicine or guarantee medical cures.
+4. Always enforce medical disclaimers.
+
+## Safety Guardrails
+- If user requests dangerous prescription drugs -> Intercept & Warn.
+- Output JSON format strictly matching DoctorCardSchema.</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-8 text-center text-xs text-slate-500">
+        <p>PulseAI (墨诊) — 跨文化 AI 中医导诊工作台 · 作品集展示页面</p>
+    </footer>
+
+    <!-- Interactive Script -->
+    <script>
+        // RAG Knowledge Base Data
+        const ragData = [
+            {
+                name_cn: "上海中医药大学附属岳阳中西医结合医院 (国际医疗部)",
+                name_en: "Yueyang Hospital International Medical Center",
+                city: "Shanghai (上海)",
+                dept: "针灸科 / 推拿科 / 治未病科",
+                lang: "English-Speaking / 英文导诊",
+                booking: "微信搜索【岳阳医院服务号】-> 特需/国际医疗部挂号"
+            },
+            {
+                name_cn: "北京中医药大学东直门医院 (国际部)",
+                name_en: "Dongzhimen Hospital International Department",
+                city: "Beijing (北京)",
+                dept: "中医内科 / 针灸科",
+                lang: "English Available / 护照挂号支持",
+                booking: "微信搜索【北京东直门医院】-> 国际部专区"
+            },
+            {
+                name_cn: "固生堂中医连锁 (上海/广州诊所)",
+                name_en: "Gushengtang TCM Clinic Chain",
+                city: "Shanghai / Guangzhou / Shenzhen",
+                dept: "名老中医妇科 / 脾胃病科 / 针灸",
+                lang: "部分特需名医支持英文交流",
+                booking: "微信小程序搜索【固生堂中医】预约"
+            }
+        ];
+
+        // Render RAG Cards
+        const ragContainer = document.getElementById('rag-container');
+        ragData.forEach(item => {
+            ragContainer.innerHTML += `
+                <div class="bg-slate-900/60 border border-slate-800 p-5 rounded-2xl flex flex-col justify-between hover:border-emerald-500/30 transition">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded">${item.city}</span>
+                            <span class="text-[10px] font-mono text-slate-500">${item.lang}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-200 text-sm leading-snug">${item.name_cn}</h4>
+                        <p class="text-xs text-slate-400 font-mono mb-3">${item.name_en}</p>
+                        <p class="text-xs text-slate-300"><b>特色科室：</b>${item.dept}</p>
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400">
+                        <b>预约途径：</b>${item.booking}
+                    </div>
+                </div>
+            `;
+        });
+
+        // Toggle Modal
+        function toggleModal(id) {
+            document.getElementById(id).classList.toggle('hidden');
+        }
+
+        // Chat Interaction Logic (Simulated Multi-Agent Flow)
+        function sendMessage() {
+            const input = document.getElementById('user-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            appendMsg(text, 'user');
+            input.value = '';
+
+            // Simulate Agent Processing
+            setTimeout(() => {
+                if (text.toLowerCase().includes('shanghai') || text.toLowerCase().includes('bloat') || text.toLowerCase().includes('fog')) {
+                    appendMsg("I've analyzed your symptoms (Brain fog, bloating, cold feet in Shanghai). This strongly correlates with Spleen Qi Deficiency with Dampness (脾虚湿阻) in TCM theory. I have generated a Doctor Communication Card for you on the right panel and matched Yueyang Hospital in Shanghai.", 'agent');
+                    updateDoctorCard(
+                        "Bloating after eating, brain fog, cold feet / 食后腹胀、头昏脑胀（脑雾）、双足冰冷",
+                        "2 Weeks (约两周)",
+                        "脾虚湿阻，阳气不达 (Spleen Qi Deficiency w/ Dampness)",
+                        "治未病科 / 针灸科 / 脾胃病科",
+                        "上海岳阳中西医结合医院 (国际医疗部)"
+                    );
+                } else if (text.toLowerCase().includes('beijing') || text.toLowerCase().includes('sleep') || text.toLowerCase().includes('headache')) {
+                    appendMsg("Symptoms analyzed (Insomnia & migraine in Beijing). Mapped to TCM concept: Liver Qi Stagnation with Deficiency Fire (肝郁化火/心神失养). Doctor Card generated on the right panel.", 'agent');
+                    updateDoctorCard(
+                        "Insomnia, irritability, one-sided headache / 入睡困难、烦躁、偏头痛",
+                        "1 Month (约一个月)",
+                        "肝郁化火，心神失养 (Liver Qi Stagnation & Sleep Disturbance)",
+                        "中医内科 / 针灸科 / 脑病科",
+                        "北京中医药大学东直门医院 (国际部)"
+                    );
+                } else {
+                    appendMsg("Received your symptoms. To ensure accurate TCM mapping, could you tell me: 1) What city are you in? 2) How long have you felt this way?", 'agent');
+                }
+            }, 800);
+        }
+
+        function appendMsg(msg, sender) {
+            const box = document.getElementById('chat-box');
+            const isUser = sender === 'user';
+            const html = `
+                <div class="${isUser ? 'bg-emerald-950/40 border-emerald-800/40 text-slate-200 ml-auto' : 'bg-slate-800/70 border-slate-700/50 text-slate-200'} border p-3.5 rounded-xl max-w-md text-sm">
+                    <p class="text-[10px] font-mono ${isUser ? 'text-emerald-400 text-right' : 'text-slate-400'} mb-1">${isUser ? 'User' : 'PulseAI Agent'}</p>
+                    ${msg}
+                </div>
+            `;
+            box.innerHTML += html;
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function updateDoctorCard(cc, dur, tcm, dept, clinic) {
+            document.getElementById('card-placeholder').classList.add('hidden');
+            document.getElementById('doctor-card-content').classList.remove('hidden');
+            document.getElementById('download-btn').classList.remove('hidden');
+            
+            document.getElementById('dc-cc').innerText = cc;
+            document.getElementById('dc-dur').innerText = dur;
+            document.getElementById('dc-tcm').innerText = tcm;
+            document.getElementById('dc-dept').innerText = dept;
+            document.getElementById('dc-clinic').innerText = clinic;
+            document.getElementById('card-status').innerText = '✅ 沟通卡已生成';
+            document.getElementById('card-status').classList.add('text-emerald-400');
+        }
+
+        function runPreset(type) {
+            const input = document.getElementById('user-input');
+            if (type === 'shanghai') {
+                input.value = "I am in Shanghai. Feeling brain fog, bloating after meals, and cold feet for 2 weeks.";
+            } else {
+                input.value = "I am in Beijing. I have bad insomnia and severe migraine headaches for a month.";
+            }
+            sendMessage();
+        }
+    </script>
+</body>
+</html>
