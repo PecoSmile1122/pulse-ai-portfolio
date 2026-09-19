@@ -42,7 +42,7 @@ You are an expert AI Assistant specialized in Traditional Chinese Medicine (TCM)
 3. Recommend corresponding TCM departments (e.g., Acupuncture Department, Preventive Medicine).
 4. Output a structured bilingual Doctor Communication Card for local Chinese physicians.
 5. Strict Guardrails: Always enforce medical disclaimers; NEVER prescribe specific herbal medication.
-
+📂 项目结构 (Project Structure)
 Plaintext
 pulse-ai-portfolio/
 ├── index.html        # 包含 Executive Dark Minimalist UI、模拟 Agent 状态机与卡片生成器的单文件 MVP
