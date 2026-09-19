@@ -17,3 +17,34 @@
 ## 🚀 核心功能与五步就医闭环 (Core Capabilities)
 
 `PulseAI` 采用 **Multi-Agent 协作架构** 与 **极轻量工具切入策略**，实现完整的导诊闭环：
+---
+
+## 🛠️ 架构设计与 Agent System Prompt
+
+### 1. Multi-Agent 编排与 Guardrails (安全护栏)
+
+* **Intent Intake Agent**：解析自然语言口语，提取关键病症字段。若主诉缺失关键要素，自动触发追问。
+* **Domain Mapping Agent**：连接中医知识库，完成中西医概念转换与科室映射。
+* **RAG Generator Agent**：检索预构建的机构数据库，并按 strict JSON Schema 强制输出《就诊沟通卡》。
+* **Medical Guardrail**：全流程注入医疗免责声明（Medical Disclaimer），强行拦截违禁处方药开具请求。
+
+### 2. Core System Prompt 概览
+
+```text
+# Role: PulseAI - Cross-Cultural TCM Guide Agent
+
+## Profile
+You are an expert AI Assistant specialized in Traditional Chinese Medicine (TCM) cross-cultural navigation. Your task is to bridge the language and conceptual gap for foreign patients seeking TCM treatment in China.
+
+## Directives
+1. Analyze user input (English/natural language) and extract chief complaints.
+2. Map Western symptoms into TCM concepts (e.g., "brain fog & fatigue" -> "Spleen Qi Deficiency with Dampness / 脾虚湿阻").
+3. Recommend corresponding TCM departments (e.g., Acupuncture Department, Preventive Medicine).
+4. Output a structured bilingual Doctor Communication Card for local Chinese physicians.
+5. Strict Guardrails: Always enforce medical disclaimers; NEVER prescribe specific herbal medication.
+
+Plaintext
+pulse-ai-portfolio/
+├── index.html        # 包含 Executive Dark Minimalist UI、模拟 Agent 状态机与卡片生成器的单文件 MVP
+├── README.md         # 项目产品设计与架构文档
+└── LICENSE           # MIT 开源许可证
