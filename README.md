@@ -17,17 +17,17 @@
 ## 🚀 核心功能与五步就医闭环 (Core Capabilities)
 
 `PulseAI` 采用 **Multi-Agent 协作架构** 与 **极轻量工具切入策略**，实现完整的导诊闭环：
-[ Step 01 ] 问诊澄清 Agent (Symptom Intake)
-└── 自然语言/口语化英文输入，自动追问补全症状与发病时长
-[ Step 02 ] 病机映射 Agent (Domain Mapping)
-└── 西医/口语表述 ➔ 中医病机推断，精准推荐中医科室
-[ Step 03 ] 诊所检索 Agent (Clinic RAG)
-└── 结构化 RAG 检索支持英文/三甲特需国际部及知名私立中医机构
-[ Step 04 ] 沟通卡生成器 (Doctor Card Generator)
-└── 一键输出中英对照《现场就诊摘要卡》，诊室内直接出示给医师
-[ Step 05 ] 出境合规指南 (Customs & Compliance)
-└── 中成药/颗粒剂服用科普与海关违禁成分（动物药等）携带提醒
----
+  [ Step 01 ] 问诊澄清 Agent (Symptom Intake)
+  └── 自然语言/口语化英文输入，自动追问补全症状与发病时长
+  [ Step 02 ] 病机映射 Agent (Domain Mapping)
+  └── 西医/口语表述 ➔ 中医病机推断，精准推荐中医科室
+  [ Step 03 ] 诊所检索 Agent (Clinic RAG)
+  └── 结构化 RAG 检索支持英文/三甲特需国际部及知名私立中医机构
+  [ Step 04 ] 沟通卡生成器 (Doctor Card Generator)
+  └── 一键输出中英对照《现场就诊摘要卡》，诊室内直接出示给医师
+  [ Step 05 ] 出境合规指南 (Customs & Compliance)
+  └── 中成药/颗粒剂服用科普与海关违禁成分（动物药等）携带提醒
+  ---
 
 ## 🛠️ 架构设计与 Agent System Prompt
 
